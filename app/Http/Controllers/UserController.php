@@ -31,8 +31,8 @@ class UserController extends Controller
         return DataTables::of($query)
             ->addColumn('status_label', fn($user) => $user->status ? 'Ativo' : 'Inativo')
             ->addColumn('actions', fn($user) => "
-                <button class='btn btn-sm btn-warning btn-edit-user' data-id='{$user->id}'>Editar</button>
-                <button class='btn btn-sm btn-danger' onclick=\"confirmDelete('/users/{$user->id}')\">Excluir</button>
+                <button class='btn btn-sm btn-warning btn-edit-user text-white' data-id='{$user->id}' data-bs-toggle='tooltip' data-bs-title='Editar' data-bs-placement='top'><i class='fa fa-edit'></i></button>
+                <button class='btn btn-sm btn-danger' onclick=\"confirmDelete('/users/{$user->id}')\" data-bs-toggle='tooltip' data-bs-title='Excluir' data-bs-placement='top'><i class='fa fa-trash'></i></button>
             ")
             ->rawColumns(['actions'])
             ->make(true);

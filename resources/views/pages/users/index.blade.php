@@ -9,7 +9,7 @@
             </h4>
 
             <div class="flex justify-end">
-                <button class="btn btn-primary" id="btnCreateUser">Criar Usuário</button>
+                <button class="btn btn-outline-dark" id="btnCreateUser">Criar Usuário</button>
             </div>
         </div>
     </x-slot>
@@ -17,16 +17,18 @@
     <div class="py-6">
         <div class="card shadow-sm rounded-3">
             <div class="card-body">
-                <table id="users-table" class="table table-striped table-hover">
-                    <thead>
-                        <tr class="py-2">
-                            <th class="">Nome</th>
-                            <th class="">Email</th>
-                            <th class="">Status</th>
-                            <th class="" width="15%">Ações</th>
-                        </tr>
-                    </thead>
-                </table>
+                <div class="table-responsive">
+                    <table id="users-table" class="table table-striped table-hover">
+                        <thead>
+                            <tr class="py-2">
+                                <th class="">Nome</th>
+                                <th class="">Email</th>
+                                <th class="">Status</th>
+                                <th class="" width="10%">Ações</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

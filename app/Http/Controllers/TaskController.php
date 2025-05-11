@@ -35,13 +35,13 @@ class TaskController extends Controller
             ->addColumn('status_label', fn($task) => $task->status === 'completed' ? 'Concluída' : 'Pendente')
             ->addColumn('actions', function ($task) {
                 $completeButton = $task->status === 'completed'
-                    ? "<button class='btn btn-sm btn-secondary' disabled><i class='fa fa-check'></i> Concluída</button>"
-                    : "<button class='btn btn-sm btn-success mark-complete' data-id='{$task->id}'><i class='fa fa-check'></i> Concluir</button>";
+                    ? "<button class='btn btn-sm btn-secondary' disabled><i class='fa fa-check'></i></button>"
+                    : "<button class='btn btn-sm btn-success mark-complete' data-id='{$task->id}' data-bs-toggle='tooltip' data-bs-title='Marcar como concluida' data-bs-placement='top'><i class='fa fa-check'></i></button>";
 
                 return "
                     {$completeButton}
-                    <button class='btn btn-sm btn-warning btn-edit-task' data-id='{$task->id}'>Editar</button>
-                    <button class='btn btn-sm btn-danger' onclick=\"confirmDelete('/tasks/{$task->id}')\">Excluir</button>
+                    <button class='btn btn-sm btn-warning btn-edit-task text-white' data-id='{$task->id}' data-bs-toggle='tooltip' data-bs-title='Editar' data-bs-placement='top'><i class='fa fa-edit'></i></button>
+                    <button class='btn btn-sm btn-danger' onclick=\"confirmDelete('/tasks/{$task->id}')\" data-bs-toggle='tooltip' data-bs-title='Excluir' data-bs-placement='top'><i class='fa fa-trash'></i></button>
                 ";
             })
             ->rawColumns(['actions'])

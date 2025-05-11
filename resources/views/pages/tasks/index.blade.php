@@ -13,7 +13,7 @@
             </h4>
 
             <div class="flex justify-end">
-                <button class="btn btn-primary" id="btnCreateTask">Criar Tarefa</button>
+                <button class="btn btn-outline-dark" id="btnCreateTask">Criar Tarefa</button>
             </div>
         </div>
     </x-slot>
@@ -21,11 +21,11 @@
     <div class="py-6">
         <div class="card shadow-sm rounded-3">
             <div class="card-body">
-                <div class="mb-5 row">
-                    <div class="col-3">
+                <div class="mb-3 row">
+                    <div class="col-md-4 col-12 mb-2">
                         <input type="text" id="filterTitle" class="form-control" placeholder="Buscar por título">
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3 col-12 mb-2">
                         <select id="filterStatus" class="form-select">
                             <option value="">Todos os status</option>
                             <option value="pending">Pendente</option>
@@ -33,25 +33,27 @@
                         </select>
 
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-4 col-12 mb-2">
                         <select id="filterUser" class="form-select">
                         </select>
                     </div>
-                    <div class="col-3 d-flex justify-content-end">
+                    <div class="col-md-1 col-12 mb-2 d-flex justify-content-end">
                         <button id="btnFilter" class="btn btn-outline-secondary">Filtrar</button>
                     </div>
                 </div>
 
-                <table id="tasks-table" class="table table-striped table-hover">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Título</th>
-                            <th>Descrição</th>
-                            <th>Status</th>
-                            <th width="20%">Ações</th>
-                        </tr>
-                    </thead>
-                </table>
+                <div class="table-responsive">
+                    <table id="tasks-table" class="table table-striped table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Título</th>
+                                <th>Descrição</th>
+                                <th>Status</th>
+                                <th width="15%">Ações</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
