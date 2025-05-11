@@ -13,8 +13,8 @@ Este projeto usa o Laravel Sail para configurar o ambiente de desenvolvimento lo
 1. **Clone o repositório**
 
   ```bash
-   git clone https://github.com/seu-usuario/task-manager.git
-   cd seu-repositorio
+   git clone git@github.com:victor18edu/task-manager.git
+   cd task-manager
   ``` 
 
 2. **Execute o Composer dentro de um contêiner Docker**
@@ -28,28 +28,55 @@ docker run --rm \
     composer install --ignore-platform-reqs
 ```
 
+3. **Copie o arquivo .env.example**
+```
+cp .env.example .env
+```
+
 4. **Rode o builder do sail**
 
 ```
 ./vendor/bin/sail up -d --build
 ```
 
-5. **Rode as migrations e as seeds**
+5. **Gere a key da aplicação**
 ```
-./vendor/bin/sail artisan migrate --seed
+./vendor/bin/sail artisan key:generate
 ```
 
-6. **instale o npm**
+6. **Instale as dependências do NPM**
 ```
 ./vendor/bin/sail npm install
 ```
 
-7. **rode o builder do npm**
+7. **Rode as migrations e seeds**
 ```
-./vendor/bin/sail npm run dev
+./vendor/bin/sail artisan migrate --seed
 ```
 
-8. **Rode os testes (Opcional)**
+8. **Compile os assets**
+```
+./vendor/bin/sail npm run build
+```
+
+9. **Rode os testes (Opcional)**
 ```
 ./vendor/bin/sail artisan test
 ```
+
+## Acesso ao sistema
+
+A aplicação estará disponível em: http://localhost
+
+O painel do Mailpit (emails fake): http://localhost:8025
+
+O phpMyAdmin (acesso ao banco): http://localhost:8080
+
+## Usuário Padrão
+Um usuário administrador é criado automaticamente pelas seeds com as seguintes credenciais:
+
+- Email: admin@admin.com
+
+- Senha: Admin123!
+
+
