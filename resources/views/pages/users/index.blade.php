@@ -95,7 +95,7 @@
                     });
                 });
 
-                // Submissão do formulário (criação/edição)
+                // Submit do formulário (criação/edição)
                 $form.on('submit', function(e) {
                     e.preventDefault();
                     const id = $('#userId').val();
