@@ -4,65 +4,68 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
+use App\Interfaces\Repositories\UserRepositoryInterface;
+use App\Interfaces\Services\UserServiceInterface;
+use App\Traits\ApiResponse;
+use Illuminate\Http\JsonResponse;
+use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
+    use ApiResponse;
+
+    public function __construct(
+        protected UserRepositoryInterface $userRepository,
+        protected UserServiceInterface $userService
+    ) {}
+
     public function index()
     {
-        $users = User::all();
-        return view('pages.users.index', compact('users'));
+        return view('pages.users.index');
     }
 
-    public function create()
+    public function datatable()
     {
-        return view('users.create');
+        $query = $this->userRepository->getDatatableQuery();
+
+        return DataTables::of($query)
+            ->addColumn('status_label', fn($user) => $user->status ? 'Ativo' : 'Inativo')
+            ->addColumn('actions', fn($user) => "
+                <button class='btn btn-sm btn-warning btn-edit-user' data-id='{$user->id}'>Editar</button>
+                <button class='btn btn-sm btn-danger' onclick=\"confirmDelete('/users/{$user->id}')\">Excluir</button>
+            ")
+            ->rawColumns(['actions'])
+            ->make(true);
     }
 
-    public function store(StoreUserRequest $request)
+    public function store(StoreUserRequest $request): JsonResponse
     {
-        DB::transaction(function () use ($request) {
-            User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'status' => $request->status,
-                'is_admin' => false,
-            ]);
-        });
+        $this->userService->store($request->validated());
 
-        return redirect()->route('users.index')->with('success', 'Usuário criado com sucesso!');
+        return $this->success(null, 'Usuário criado com sucesso!', 201);
     }
 
-    public function edit(User $user)
+    public function edit(int $id): JsonResponse
     {
-        return view('pages.users.edit', compact('user'));
+        $user = $this->userRepository->findById($id);
+
+        return $this->success($user, '');
     }
 
-    public function update(UpdateUserRequest $request, User $user)
+    public function update(UpdateUserRequest $request, int $id): JsonResponse
     {
-        DB::transaction(function () use ($request, $user) {
-            $data = $request->only(['name', 'email', 'status']);
-            if ($request->filled('password')) {
-                $data['password'] = Hash::make($request->password);
-            }
-            $user->update($data);
-        });
+        $user = $this->userRepository->findById($id);
 
-        return redirect()->route('users.index')->with('success', 'Usuário atualizado com sucesso!');
+        $this->userService->update($user, $request->validated());
+
+        return $this->success(null, 'Usuário atualizado com sucesso!', 200);
     }
 
-    public function destroy(User $user)
+    public function destroy(int $id): JsonResponse
     {
-        if ($user->tasks()->exists()) {
-            return redirect()->route('users.index')->with('error', 'Não é possível excluir um usuário com tarefas.');
-        }
+        $user = $this->userRepository->findById($id);
+        $result = $this->userService->destroy($user);
 
-        DB::transaction(fn() => $user->delete());
-
-        return redirect()->route('users.index')->with('success', 'Usuário excluído com sucesso!');
+        return response()->json($result, $result['success'] ? 201 : 400);
     }
 }

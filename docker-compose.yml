@@ -85,7 +85,7 @@ services:
         ports:
             - "8080:80"
         environment:
-            PMA_HOST: mysqlA
+            PMA_HOST: mysql
             MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
         networks:
             - sail
@@ -96,4 +96,6 @@ networks:
         driver: bridge
 volumes:
     sail-mysql:
+        driver: local
+    sail-rabbitmq:
         driver: local

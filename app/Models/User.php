@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'status',
     ];
 
     /**
@@ -45,6 +46,12 @@ class User extends Authenticatable
 
     public function tasks()
     {
-        return $this->hasMany(Task::class);
+        return $this->belongsToMany(Task::class)->withTimestamps();
+    }
+
+
+    public function isAdmin(): bool
+    {
+        return $this->is_admin;
     }
 }

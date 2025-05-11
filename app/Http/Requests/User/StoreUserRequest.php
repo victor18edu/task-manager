@@ -2,30 +2,25 @@
 
 namespace App\Http\Requests\User;
 
-use Illuminate\Foundation\Http\FormRequest;
-
-class StoreUserRequest extends FormRequest
+class StoreUserRequest extends AbstractUserRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
-    public function rules(): array
+    protected function emailRule(): array
     {
-        return [
-            'name' => 'required|string|min:3|max:200',
-            'email' => 'required|email|unique:users,email|max:200',
-            'password' => 'required|string|min:8|regex:/[a-z]/i|regex:/[0-9]/|regex:/[@$!%*#?&]/',
-            'status' => 'required|boolean',
-        ];
+        return ['required', 'email', 'max:200', 'unique:users,email'];
+    }
+
+    protected function passwordRule(): array
+    {
+        return ['required', 'string', 'min:8', 'regex:/[a-z]/i', 'regex:/[0-9]/', 'regex:/[@$!%*#?&]/'];
+    }
+
+    protected function statusRule(): string
+    {
+        return 'nullable|boolean';
     }
 }
